@@ -16,6 +16,26 @@ int patternCount(QString str,QString pattern)
     }
     return count;
 }
+int patternToNumber(QString dna)
+{
+
+}
+
+int* computFreq(QString dna,int k)
+{
+    int size=pow(4,k);
+    int *mas=new int[pow(4,k)];
+    for(int i=0;i<size;i++)
+        mas[i]=0;
+    for(int i=0;i<(dna.length() - k);i++)
+    {
+        QString pattern=dna.mid(i,k);
+        j=patternToNumber(pattern);
+        mas[i]=mas[i]+1;
+    }
+    return mas;
+}
+
 QString patternMatch(QString dna, QString pattern)
 {
     QString result="";
