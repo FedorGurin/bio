@@ -3,6 +3,8 @@
 #include <QTextStream>
 #include <QString>
 #include <QDebug>
+
+#include <math.h>
 int patternCount(QString str,QString pattern)
 {
     int i=0;
@@ -16,22 +18,45 @@ int patternCount(QString str,QString pattern)
     }
     return count;
 }
-int patternToNumber(QString dna)
+//! преобразование нуклеотида в целое число
+int convertNuk(QChar ch)
 {
+    if(ch == QChar('A'))
+        return 0;
+    else if(ch == QChar('T'))
+        return 3;
+    else if(ch == QChar('C'))
+        return 1;
+    else if(ch == QChar('G'))
+       return 2;
 
+    qDebug("bad\n");
+    return -1;
+}
+//! преобразование шаблона в число
+int patternToNumber(QString pattern)
+{
+    int result=0;
+    int size=pattern.length();
+    for(int i=0;i<size;i++)
+    {
+        result+=convertNuk(pattern[size-i-1])*powf(4,i);
+    }
+    return result;
 }
 
 int* computFreq(QString dna,int k)
 {
-    int size=pow(4,k);
-    int *mas=new int[pow(4,k)];
+    int size=powf(4,k);
+    int *mas=new int[size];
+    int j;
     for(int i=0;i<size;i++)
         mas[i]=0;
     for(int i=0;i<(dna.length() - k);i++)
     {
         QString pattern=dna.mid(i,k);
         j=patternToNumber(pattern);
-        mas[i]=mas[i]+1;
+        mas[j]=mas[j]+1;
     }
     return mas;
 }
@@ -91,7 +116,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    QFile file("./Vibrio_cholerae.txt");
+    QFile file("./dataset.txt");
     QFile fileRes("./result.txt");
     bool isOpen=file.open(QIODevice::ReadOnly);
     bool isOpenRes=fileRes.open(QIODevice::WriteOnly);
@@ -103,11 +128,15 @@ int main(int argc, char *argv[])
     QString str=in.readAll();
 
 
-    QString pattern("CTTGATCAT");
-    QString res=patternMatch(str,pattern);
+    int *ptr=computFreq(str,2);
+  //  QString pattern("CTTGATCAT");
+  //  QString res=patternMatch(str,pattern);
 //    QString reverse=reverseDNA(str);
 
-        out<<res;
+    int size=powf(4,2);
+    qDebug("vslue=%d\n",size);
+    for(int i=0;i<size;i++)
+        out<<QString::number(ptr[i])<<" ";
         out.flush();
 qDebug("ready\n");
 
