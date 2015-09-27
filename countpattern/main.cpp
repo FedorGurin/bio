@@ -52,7 +52,7 @@ int* computFreq(QString dna,int k)
     int j;
     for(int i=0;i<size;i++)
         mas[i]=0;
-    for(int i=0;i<(dna.length() - k);i++)
+    for(int i=0;i<=(dna.length() - k);i++)
     {
         QString pattern=dna.mid(i,k);
         j=patternToNumber(pattern);
@@ -128,12 +128,12 @@ int main(int argc, char *argv[])
     QString str=in.readAll();
 
 
-    int *ptr=computFreq(str,2);
+    int *ptr=computFreq(str,7);
   //  QString pattern("CTTGATCAT");
   //  QString res=patternMatch(str,pattern);
 //    QString reverse=reverseDNA(str);
 
-    int size=powf(4,2);
+    int size=powf(4,7);
     qDebug("vslue=%d\n",size);
     for(int i=0;i<size;i++)
         out<<QString::number(ptr[i])<<" ";
